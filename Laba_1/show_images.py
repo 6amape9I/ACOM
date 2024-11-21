@@ -21,7 +21,7 @@ def gray_image_jpg():
 
 def any_image_jpeg():
     image_path = r'./images/image.bmp'
-    image = cv2.imread(image_path, cv2.IMREAD_ANYCOLOR)
+    image = cv2.imread(image_path, cv2.COLOR_YCR_CB2RGB)
     cv2.namedWindow('Image', cv2.WINDOW_FULLSCREEN)
     cv2.imshow('Image', image)
     cv2.waitKey(0)
