@@ -2,9 +2,7 @@ import cv2
 
 def phone_camera():
     cap = cv2.VideoCapture(1)
-
     if not cap.isOpened():
-        print("Error: Could not open camera.")
         exit()
 
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
