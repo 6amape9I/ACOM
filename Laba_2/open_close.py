@@ -9,7 +9,6 @@ def open_close():
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
         mask = cv2.inRange(hsv, (80, 10, 0), (100, 255, 255))
-        # mask = cv2.inRange(hsv, lower_red, upper_red)
 
         kernel = np.ones((5, 5), np.uint8)
 

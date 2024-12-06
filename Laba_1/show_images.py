@@ -2,7 +2,7 @@ import cv2
 
 
 def normal_image_png():
-    image_path = r'./images/image.png'
+    image_path = r'../Laba_4/images/image.png'
     image = cv2.imread(image_path, cv2.IMREAD_UNCHANGED)
     cv2.namedWindow('Image', cv2.WINDOW_NORMAL)
     cv2.imshow('Image', image)
@@ -11,7 +11,7 @@ def normal_image_png():
 
 
 def gray_image_jpg():
-    image_path = r'./images/image.jpg'
+    image_path = r'../Laba_4/images/image.jpg'
     image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
     cv2.namedWindow('Image', cv2.WINDOW_AUTOSIZE)
     cv2.imshow('Image', image)
@@ -20,7 +20,7 @@ def gray_image_jpg():
 
 
 def any_image_jpeg():
-    image_path = r'./images/image.bmp'
+    image_path = r'../Laba_4/images/image.bmp'
     image = cv2.imread(image_path, cv2.COLOR_YCR_CB2RGB)
     cv2.namedWindow('Image', cv2.WINDOW_FULLSCREEN)
     cv2.imshow('Image', image)

@@ -8,6 +8,13 @@ def gaus_blur(img, core_size, standard_deviation):
     core = norm_matrix(core_size, fill_matrix(core_size, standard_deviation))
 
     image = img.copy()
+
+    new_image = np.zeros(shape=(image.shape[0]+12, image.shape[1]+12))
+    for i in range(image.shape[0]):
+        for j in range(image.shape[1]):
+            new_image[i+6][j+6] = image[i][j]
+
+
     x_start = core_size // 2
     y_start = core_size // 2
     for i in range(x_start, image.shape[0] - x_start):
@@ -22,6 +29,8 @@ def gaus_blur(img, core_size, standard_deviation):
     return image
 
 
+
+
 if __name__ == '__main__':
     core_size = 13
     standard_deviation = 100
@@ -29,9 +38,6 @@ if __name__ == '__main__':
 
     blured_image = gaus_blur(img, core_size, standard_deviation)
     cv2.imshow("Blured", blured_image)
-
-    blured_image_cv = cv2.GaussianBlur(img, (core_size, core_size), standard_deviation)
-    cv2.imshow("Blured CV", blured_image_cv)
 
     cv2.imshow('img', img)
     cv2.waitKey(0)

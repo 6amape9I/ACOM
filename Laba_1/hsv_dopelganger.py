@@ -1,8 +1,8 @@
 import cv2
 
 def hsv_dopelganger():
-    im1 = cv2.imread( r'./images/image.png')
-    im2 = cv2.imread( r'./images/image.png')
+    im1 = cv2.imread(r'../Laba_4/images/image.png')
+    im2 = cv2.imread(r'../Laba_4/images/image.png')
 
     cv2.namedWindow('image', cv2.WINDOW_NORMAL)
     cv2.namedWindow('hsv image', cv2.WINDOW_NORMAL)

@@ -1,5 +1,4 @@
 import cv2
-import numpy as np
 
 def convert_to_hsv():
     cap = cv2.VideoCapture(0)
@@ -15,6 +14,7 @@ def convert_to_hsv():
 
     cap.release()
     cv2.destroyAllWindows()
+
 
 if __name__ == '__main__':
     convert_to_hsv()

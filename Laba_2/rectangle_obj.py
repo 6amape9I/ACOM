@@ -1,5 +1,5 @@
 import cv2
-import numpy as np
+import numpy as npq
 
 def rectangle_obj():
     cap = cv2.VideoCapture(0)
@@ -8,7 +8,7 @@ def rectangle_obj():
         ret, frame = cap.read()
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
-        mask = cv2.inRange(hsv, (80, 10, 0), (100, 255, 255))
+        mask = cv2.inRange(hsv, (90, 60, 60), (110, 150, 150))
 
 
         moments = cv2.moments(mask)
