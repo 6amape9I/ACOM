@@ -98,16 +98,42 @@ def edge_detection(grayscale_image: np.ndarray, lower_bar: float = None, high_ba
         cv2.imshow('Image', edges)
         cv2.waitKey(0)
 
+        ###########################################
 
+        max_grad_len = grad_len.max()
+        low_level = int(max_grad_len * lower_bar)
+        high_level = int(max_grad_len * high_bar)
+        for y in range(edges.shape[0]):
+            for x in range(edges.shape[1]):
+                if edges[y, x]:
+                    if grad_len[y, x] < low_level:
+                        edges[y, x] = 0
+                    elif grad_len[y, x] < high_level:
+                        keep = True
+
+                        for neighbor_y in (y - 1, y, y + 1):
+                            for neighbor_x in (x - 1, x, x + 1):
+                                if neighbor_y == y or neighbor_x == x:
+                                    break
+                                if edges[neighbor_y, neighbor_x]:
+                                    keep = False
+                                if grad_len[neighbor_y, neighbor_x] < high_level:
+                                    keep = False
+                        if keep:
+                            edges[y, x] = 0
+
+    return edges  # возвращаем изображение с границами
 
 
 if __name__ == '__main__':
     core_size = 5
-    lower_bar = 0.30
-    high_bar = 0.40
+    lower_bar = 0.15
+    high_bar = 0.30
 
     path = r'./images/img.png'
     img = GAUSBlur(path, core_size)
 
     cv2.imshow('img', img)
-    edge_detection(img, lower_bar, high_bar, show_grad=True, show_nms=True)
+    edge = edge_detection(img, lower_bar, high_bar, show_grad=True, show_nms=True)
+    cv2.imshow('edge', edge)
+    cv2.waitKey(0)
