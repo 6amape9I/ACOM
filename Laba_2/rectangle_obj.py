@@ -1,5 +1,5 @@
 import cv2
-import numpy as npq
+import numpy as np
 
 def rectangle_obj():
     cap = cv2.VideoCapture(0)

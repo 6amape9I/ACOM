@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 
-def GAUSBlur(filepath: str, blur_kernel_size: int, scale: float = 1):
+def GAUSBlur(filepath: str):
     img = cv2.imread(filepath, cv2.IMREAD_GRAYSCALE)
     small = cv2.resize(img, (0, 0), fx=0.5, fy=0.5)
     return cv2.GaussianBlur(small, (5, 5), cv2.BORDER_DEFAULT)
@@ -14,7 +14,6 @@ def svertka(grayscale_image: np.ndarray, kernel: np.ndarray):
     kernel_size = kernel.shape[0]
     half_kernel_size = int(kernel_size // 2)
 
-    # идем по каждому пикселю изображения без границы
     for y in range(half_kernel_size, h - half_kernel_size):
         for x in range(half_kernel_size, w - half_kernel_size):
 
@@ -30,25 +29,24 @@ def svertka(grayscale_image: np.ndarray, kernel: np.ndarray):
 
 def angle_value(x, y, tang):
     if (x >= 0 and y <= 0 and tang < -2.414) or (x <= 0 and y <= 0 and tang > 2.414):
-        return 0  # сер
+        return 0
     elif x >= 0 and y <= 0 and tang < -0.414:
-        return 1  # корич
+        return 1
     elif (x >= 0 and y <= 0 and tang > -0.414) or (x >= 0 and y >= 0 and tang < 0.414):
-        return 2  # крас
+        return 2
     elif x >= 0 and y >= 0 and tang < 2.414:
-        return 3  # оранж
+        return 3
     elif (x >= 0 and y >= 0 and tang > 2.414) or (x <= 0 and y >= 0 and tang < -2.414):
-        return 4  # желт
+        return 4
     elif x <= 0 and y >= 0 and tang < -0.414:
-        return 5  # зел
+        return 5
     elif (x <= 0 and y >= 0 and tang > -0.414) or (x <= 0 and y <= 0 and tang < 0.414):
-        return 6  # голуб
+        return 6
     elif x <= 0 and y <= 0 and tang < 2.414:
-        return 7  # син
+        return 7
 
 
-def edge_detection(grayscale_image: np.ndarray, lower_bar: float = None, high_bar: float = None,
-                   show_grad: bool = True, show_nms: bool = True):
+def edge_detection(grayscale_image: np.ndarray, lower_bar: float = None, high_bar: float = None):
     ker_x = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]])
     ker_y = np.array([[-1, -2, -1], [0, 0, 0], [1, 2, 1]])
 
@@ -59,7 +57,7 @@ def edge_detection(grayscale_image: np.ndarray, lower_bar: float = None, high_ba
     max_grad_len = grad_len.max()
 
     if True:
-        cv2.imshow('Image gradient', (grad_len / max_grad_len * 255).astype(np.uint8))  # показать градиенты
+        cv2.imshow('Image gradient', (grad_len / max_grad_len * 255).astype(np.uint8))
         cv2.waitKey(0)
 
     tang = np.divide(gy, gx)
@@ -90,8 +88,9 @@ def edge_detection(grayscale_image: np.ndarray, lower_bar: float = None, high_ba
                 neighbor2 = [y - 1, x - 1]
             else:
                 raise Exception('Angle not defined')
-            if grad_len[y, x] >= grad_len[neighbor1[0], neighbor1[1]] and grad_len[y, x] > grad_len[
-                neighbor2[0], neighbor2[1]]:
+
+            if (grad_len[y, x] >= grad_len[neighbor1[0], neighbor1[1]] and
+                    grad_len[y, x] >= grad_len[neighbor2[0], neighbor2[1]]):
                 edges[y, x] = 255
 
     if True:
@@ -106,10 +105,11 @@ def edge_detection(grayscale_image: np.ndarray, lower_bar: float = None, high_ba
         for y in range(edges.shape[0]):
             for x in range(edges.shape[1]):
                 if edges[y, x]:
+                    keep = True
                     if grad_len[y, x] < low_level:
                         edges[y, x] = 0
                     elif grad_len[y, x] < high_level:
-                        keep = True
+                        keep = False
 
                         for neighbor_y in (y - 1, y, y + 1):
                             for neighbor_x in (x - 1, x, x + 1):
@@ -121,8 +121,7 @@ def edge_detection(grayscale_image: np.ndarray, lower_bar: float = None, high_ba
                                     keep = False
                         if keep:
                             edges[y, x] = 0
-
-    return edges  # возвращаем изображение с границами
+    return edges
 
 
 if __name__ == '__main__':
@@ -131,9 +130,9 @@ if __name__ == '__main__':
     high_bar = 0.30
 
     path = r'./images/img.png'
-    img = GAUSBlur(path, core_size)
+    img = GAUSBlur(path)
 
     cv2.imshow('img', img)
-    edge = edge_detection(img, lower_bar, high_bar, show_grad=True, show_nms=True)
+    edge = edge_detection(img, lower_bar, high_bar)
     cv2.imshow('edge', edge)
     cv2.waitKey(0)
